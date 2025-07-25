@@ -1,8 +1,9 @@
-import { Outlet } from 'react-router'
 import { UploadOutlined, UserOutlined, VideoCameraOutlined } from '@ant-design/icons'
-import { Layout, Menu, theme } from 'antd'
+import { Layout, Menu } from 'antd'
 import React from 'react'
+import { Outlet } from 'react-router'
 import AdminHeader from '~/components/admin-header'
+import { useBoundStore } from '~/stores/useAppStore'
 
 const { Sider, Header, Content, Footer } = Layout
 
@@ -13,13 +14,12 @@ const items = [UserOutlined, VideoCameraOutlined, UploadOutlined, UserOutlined].
 }))
 
 const AdminLayout = () => {
-  const {
-    token: { colorBgContainer, borderRadiusLG }
-  } = theme.useToken()
+  const { theme } = useBoundStore()
 
   return (
     <Layout className='h-screen'>
       <Sider
+        theme={theme}
         breakpoint='lg'
         collapsedWidth='0'
         onBreakpoint={(broken) => {
@@ -30,7 +30,7 @@ const AdminLayout = () => {
         }}
       >
         <div className='py-2 px-3 text-white flex uppercase font-semibold text-2xl italic'>Admin Panel</div>
-        <Menu theme='dark' mode='inline' defaultSelectedKeys={['4']} items={items} />
+        <Menu theme={theme} mode='inline' defaultSelectedKeys={['4']} items={items} />
       </Sider>
       <Layout>
         <AdminHeader />
