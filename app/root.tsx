@@ -1,8 +1,11 @@
-import { isRouteErrorResponse, Links, Meta, Outlet, Scripts, ScrollRestoration } from 'react-router'
-
-import type { Route } from './+types/root'
 import '@ant-design/v5-patch-for-react-19'
+import { ConfigProvider, Switch } from 'antd'
+import { isRouteErrorResponse, Links, Meta, Outlet, Scripts, ScrollRestoration } from 'react-router'
+import { darkTheme, lightTheme } from '~/config/theme'
+import { useBoundStore } from '~/stores/useAppStore'
+import type { Route } from './+types/root'
 import './app.css'
+import { Theme } from '~/stores/slices/themeSlice'
 
 export const links: Route.LinksFunction = () => [
   { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
@@ -13,7 +16,13 @@ export const links: Route.LinksFunction = () => [
   },
   {
     rel: 'stylesheet',
-    href: 'https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap'
+    href: 'https://fonts.googleapis.com/css2?family=Anton&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap'
+  },
+  {
+    rel: 'stylesheet',
+    href: 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css',
+    integrity: 'sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH',
+    crossOrigin: 'anonymous'
   }
 ]
 
@@ -25,12 +34,6 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <meta name='viewport' content='width=device-width, initial-scale=1' />
         <Meta />
         <Links />
-        <link
-          href='https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css'
-          rel='stylesheet'
-          integrity='sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH'
-          crossOrigin='anonymous'
-        />
       </head>
       <body>
         {children}
@@ -42,7 +45,13 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
-  return <Outlet />
+  const { theme: currentTheme } = useBoundStore()
+
+  return (
+    <ConfigProvider theme={currentTheme === Theme.DARK ? darkTheme : lightTheme}>
+      <Outlet />
+    </ConfigProvider>
+  )
 }
 
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
