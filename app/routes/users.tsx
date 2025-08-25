@@ -1,5 +1,7 @@
-const ManageUsersPage = () => {
-  return <div>ManageUsersPage</div>
+import UsersManagementPage from '~/pages/users-management-page'
+
+const UsersPage = () => {
+  return <UsersManagementPage />
 }
 
-export default ManageUsersPage
+export default UsersPage

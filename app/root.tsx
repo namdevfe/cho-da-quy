@@ -1,11 +1,11 @@
 import '@ant-design/v5-patch-for-react-19'
-import { ConfigProvider, Switch } from 'antd'
+import { ConfigProvider } from 'antd'
 import { isRouteErrorResponse, Links, Meta, Outlet, Scripts, ScrollRestoration } from 'react-router'
 import { darkTheme, lightTheme } from '~/config/theme'
+import { Theme } from '~/stores/slices/themeSlice'
 import { useBoundStore } from '~/stores/useBoundStore'
 import type { Route } from './+types/root'
-import './app.css'
-import { Theme } from '~/stores/slices/themeSlice'
+import '~/styles/app.css'
 
 export const links: Route.LinksFunction = () => [
   { rel: 'preconnect', href: 'https://fonts.googleapis.com' },

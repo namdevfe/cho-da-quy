@@ -5,9 +5,13 @@
   --color-primary: #0f1c4d;
 }
 
+a {
+  text-decoration: none;
+}
+
 html,
 body {
-  @apply bg-white dark:bg-primary font-inter text-base overflow-hidden;
+  @apply bg-white dark:bg-primary font-inter text-base;
 
   @media (prefers-color-scheme: dark) {
     color-scheme: dark;
