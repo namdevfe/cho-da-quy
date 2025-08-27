@@ -13,7 +13,6 @@ export const useBoundStore = create<ThemeSlice & AuthSlice>()(
       name: 'cdq-store',
       partialize: (state) => ({
         theme: state.theme,
-        token: state.token,
         isLoggedIn: state.isLoggedIn,
         profile: state.profile
       })

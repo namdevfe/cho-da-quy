@@ -8,7 +8,7 @@ interface ProtectedRouteProps {
 }
 
 const ProtectedRoute = ({ redirectPath = publicRoutes.LOGIN }: ProtectedRouteProps) => {
-  const isLoggedIn = useBoundStore((state) => state.token)
+  const isLoggedIn = useBoundStore((state) => state.isLoggedIn)
   const navigate = useNavigate()
 
   useEffect(() => {

@@ -59,10 +59,12 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
 export default function App() {
   const setAuth = useBoundStore((state) => state.setAuth)
-  const { data: profileData } = useProfile()
+  const { isPending: isProfilePending, data: profileData } = useProfile()
 
   useEffect(() => {
-    if (profileData) setAuth(profileData)
+    if (!isProfilePending && profileData) {
+      setAuth({ profile: profileData })
+    }
   }, [profileData])
 
   return <Outlet />

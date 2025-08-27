@@ -2,18 +2,18 @@ import { type StateCreator } from 'zustand'
 import type { IUser } from '~/types/user'
 
 export interface AuthSlice {
+  isLoggedIn: boolean
   profile: IUser | null
-  token: { accessToken: string; refreshToken: string } | null
-  setToken: (token: { accessToken: string; refreshToken: string }) => void
-  setAuth: (profile: IUser) => void
+  setAuth: ({ profile, isLoggedIn }: { profile: IUser | null; isLoggedIn?: boolean }) => void
+  logout: () => void
 }
 
 export const createAuthSlice: StateCreator<AuthSlice, [], [], AuthSlice> = (set) => ({
   // Initial states
+  isLoggedIn: false,
   profile: null,
-  token: null,
 
   // Actions
-  setToken: ({ accessToken, refreshToken }) => set({ token: { accessToken, refreshToken } }),
-  setAuth: (profile) => set({ profile })
+  setAuth: ({ profile, isLoggedIn }) => set((state) => ({ profile, isLoggedIn: isLoggedIn ?? state.isLoggedIn })),
+  logout: () => set({ profile: null, isLoggedIn: false })
 })
