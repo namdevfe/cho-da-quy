@@ -10,5 +10,8 @@ export const authService = {
   },
   getProfile: (): Promise<GetProfileResponse> => {
     return axiosClient.get('/auth/me')
+  },
+  refreshToken: () => {
+    return axiosClient.post('/auth/refresh-token')
   }
 }

@@ -6,12 +6,12 @@ import type { GetProfileResponse } from '~/types/auth'
 type UseProfile = Omit<UseQueryOptions<GetProfileResponse>, 'queryFn' | 'queryKey'>
 
 export const useProfile = (options?: UseProfile) => {
-  const token = useBoundStore((state) => state.token)
+  const isLoggedIn = useBoundStore((state) => state.isLoggedIn)
 
   return useQuery({
     ...options,
-    queryKey: ['profile', token],
+    queryKey: ['profile'],
     queryFn: authService.getProfile,
-    enabled: !!token
+    enabled: isLoggedIn
   })
 }

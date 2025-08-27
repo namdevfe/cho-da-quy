@@ -1,4 +1,8 @@
-import axios from 'axios'
+import { message } from 'antd'
+import axios, { AxiosError, type InternalAxiosRequestConfig } from 'axios'
+import { HttpStatus, publicRoutes } from '~/constants'
+import { authService } from '~/services/auth-service'
+import { useBoundStore } from '~/stores/use-bound-store'
 
 const axiosClient = axios.create({
   baseURL: 'http://localhost:3000',
@@ -27,10 +31,29 @@ axiosClient.interceptors.response.use(
     // Do something with response data
     return response.data ?? response
   },
-  (error) => {
-    // Any status codes that falls outside the range of 2xx cause this function to trigger
-    // Do something with response error
-    return Promise.reject(error)
+  async (error) => {
+    const isLoggedIn = useBoundStore.getState().isLoggedIn
+    const logout = useBoundStore.getState().logout
+
+    if (error instanceof AxiosError) {
+      const originalRequest = error.config as InternalAxiosRequestConfig & { _retry?: boolean }
+      if (error.response?.status === HttpStatus.UNAUTHORIZED.statusCode && !originalRequest._retry && isLoggedIn) {
+        try {
+          originalRequest._retry = true
+
+          // Handle Refresh Token
+          await authService.refreshToken()
+
+          return axiosClient(originalRequest)
+        } catch (error) {
+          logout()
+          message.success('Hết phiên đăng nhập')
+          window.location.href = publicRoutes.LOGIN
+        }
+      } else {
+        return Promise.reject(error)
+      }
+    }
   }
 )
 
