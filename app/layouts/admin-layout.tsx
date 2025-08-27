@@ -2,7 +2,7 @@ import { Layout, Menu } from 'antd'
 import { Outlet } from 'react-router'
 import AdminHeader from '~/components/admin-header'
 import SidebarMenu from '~/components/sidebar-menu'
-import { useBoundStore } from '~/stores/useBoundStore'
+import { useBoundStore } from '~/stores/use-bound-store'
 
 const { Sider, Content } = Layout
 

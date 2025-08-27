@@ -2,7 +2,7 @@ import { UserOutlined, DashboardOutlined } from '@ant-design/icons'
 import { Menu, type MenuProps } from 'antd'
 import { useState } from 'react'
 import { useLocation, useNavigate } from 'react-router'
-import { useBoundStore } from '~/stores/useBoundStore'
+import { useBoundStore } from '~/stores/use-bound-store'
 
 const menuItems: MenuProps['items'] = [
   {

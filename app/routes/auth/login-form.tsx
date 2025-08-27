@@ -1,6 +1,10 @@
 import { Button, Checkbox, Divider, Flex, Form, Input, message, Typography } from 'antd'
+import { useNavigate } from 'react-router'
 import { validateMessages } from '~/constants/message'
+import { privateRoutes } from '~/constants/route'
+import { useProfile } from '~/hooks/use-profile'
 import { useLogin } from '~/pages/auth/hooks/use-login'
+import { useBoundStore } from '~/stores/use-bound-store'
 import type { LoginPayload } from '~/types/auth'
 
 const { Title, Text } = Typography
@@ -8,14 +12,23 @@ const { Title, Text } = Typography
 const LoginForm = () => {
   const [form] = Form.useForm()
   const { isPending, mutate } = useLogin()
+  const setToken = useBoundStore((state) => state.setToken)
+  const navigate = useNavigate()
 
   const handleLogin = async (values: LoginPayload & { isAgree: boolean }) => {
     const { isAgree, ...payload } = values
 
     mutate(payload, {
-      onSuccess: () => {
-        form.resetFields()
-        message.success('Đăng nhập thành công')
+      onSuccess: (data) => {
+        if (!!data.user) {
+          const { accessToken, refreshToken } = data.user || {}
+          setToken({ accessToken, refreshToken })
+          message.success('Đăng nhập thành công')
+          form.resetFields()
+
+          // // Navigate to dashboard
+          navigate(privateRoutes.DASHBOARD)
+        }
       }
     })
   }

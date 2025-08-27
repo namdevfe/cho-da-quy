@@ -4,11 +4,13 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { ConfigProvider } from 'antd'
 import { isRouteErrorResponse, Links, Meta, Outlet, Scripts, ScrollRestoration } from 'react-router'
 import { darkTheme, lightTheme } from '~/config/theme'
-import { Theme } from '~/stores/slices/themeSlice'
-import { useBoundStore } from '~/stores/useBoundStore'
+import { Theme } from '~/stores/slices/theme-slice'
+import { useBoundStore } from '~/stores/use-bound-store'
 import type { Route } from './+types/root'
 
 import '~/styles/app.css'
+import { useProfile } from '~/hooks/use-profile'
+import { useEffect } from 'react'
 
 export const links: Route.LinksFunction = () => [
   { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
@@ -30,6 +32,9 @@ export const links: Route.LinksFunction = () => [
 ]
 
 export function Layout({ children }: { children: React.ReactNode }) {
+  const queryClient = new QueryClient()
+  const { theme: currentTheme } = useBoundStore()
+
   return (
     <html lang='en'>
       <head>
@@ -39,7 +44,12 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body>
-        {children}
+        <ConfigProvider theme={currentTheme === Theme.DARK ? darkTheme : lightTheme}>
+          <QueryClientProvider client={queryClient}>
+            {children}
+            <ReactQueryDevtools initialIsOpen={false} />
+          </QueryClientProvider>
+        </ConfigProvider>
         <ScrollRestoration />
         <Scripts />
       </body>
@@ -48,17 +58,14 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
-  const { theme: currentTheme } = useBoundStore()
-  const queryClient = new QueryClient()
+  const setAuth = useBoundStore((state) => state.setAuth)
+  const { data: profileData } = useProfile()
 
-  return (
-    <ConfigProvider theme={currentTheme === Theme.DARK ? darkTheme : lightTheme}>
-      <QueryClientProvider client={queryClient}>
-        <Outlet />
-        <ReactQueryDevtools initialIsOpen={false} />
-      </QueryClientProvider>
-    </ConfigProvider>
-  )
+  useEffect(() => {
+    if (profileData) setAuth(profileData)
+  }, [profileData])
+
+  return <Outlet />
 }
 
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
