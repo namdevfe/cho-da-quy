@@ -1,6 +1,6 @@
 import { Button, Flex, Input, Layout, Space, theme } from 'antd'
-import { Theme } from '~/stores/slices/themeSlice'
-import { useBoundStore } from '~/stores/useBoundStore'
+import { Theme } from '~/stores/slices/theme-slice'
+import { useBoundStore } from '~/stores/use-bound-store'
 import { BulbOutlined, BulbFilled } from '@ant-design/icons'
 import { UserOutlined } from '@ant-design/icons'
 import { Avatar } from 'antd'

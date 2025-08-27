@@ -1,5 +1,5 @@
 import axiosClient from '~/config/axios-client'
-import type { LoginPayload, LoginResponse, RegisterPayload, RegisterResponse } from '~/types/auth'
+import type { GetProfileResponse, LoginPayload, LoginResponse, RegisterPayload, RegisterResponse } from '~/types/auth'
 
 export const authService = {
   register: (payload: RegisterPayload): Promise<RegisterResponse> => {
@@ -7,5 +7,8 @@ export const authService = {
   },
   login: (payload: LoginPayload): Promise<LoginResponse> => {
     return axiosClient.post('/auth/login', payload)
+  },
+  getProfile: (): Promise<GetProfileResponse> => {
+    return axiosClient.get('/auth/me')
   }
 }
