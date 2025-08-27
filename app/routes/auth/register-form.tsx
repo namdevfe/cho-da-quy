@@ -1,14 +1,25 @@
-import { Button, Checkbox, Divider, Flex, Form, Input, Space, Typography } from 'antd'
+import { Button, Checkbox, Divider, Flex, Form, Input, message, Space, Typography } from 'antd'
 import { useNavigate } from 'react-router'
+import { validateMessages } from '~/constants/message'
+import { useRegister } from '~/pages/auth/hooks'
+import type { RegisterPayload } from '~/types/auth'
 
 const { Title, Text } = Typography
 
 const RegisterForm = () => {
   const navigate = useNavigate()
   const [form] = Form.useForm()
+  const { mutate } = useRegister()
 
-  const handleLogin = async (values: any) => {
-    console.log('🚀values---->', values)
+  const handleRegister = async (values: RegisterPayload) => {
+    const payload: RegisterPayload = { ...values }
+
+    mutate(payload, {
+      onSuccess: () => {
+        message.success('Đăng ký tài khoản thành công')
+        navigate('/login')
+      }
+    })
   }
 
   return (
@@ -23,14 +34,35 @@ const RegisterForm = () => {
         </Text>
       </div>
 
-      <Form layout='vertical' style={{ marginTop: 32 }} form={form} name='login-form' onFinish={handleLogin}>
-        <Form.Item required name='name' label='Tên đăng nhập'>
+      <Form layout='vertical' style={{ marginTop: 32 }} form={form} name='login-form' onFinish={handleRegister}>
+        <Form.Item
+          required
+          name='name'
+          label='Tên đăng nhập'
+          rules={[{ required: true, message: validateMessages.REQUIRED }]}
+        >
           <Input placeholder='Nhập tên đăng nhập' className='h-14' />
         </Form.Item>
-        <Form.Item required name='email' label='Email'>
+        <Form.Item
+          required
+          name='email'
+          label='Email'
+          rules={[
+            { required: true, message: validateMessages.REQUIRED },
+            { message: validateMessages.REGEX.EMAIL.MESSAGE, pattern: validateMessages.REGEX.EMAIL.PATTERN }
+          ]}
+        >
           <Input placeholder='Nhập email' className='h-14' />
         </Form.Item>
-        <Form.Item required name='password' label='Mật khẩu'>
+        <Form.Item
+          required
+          name='password'
+          label='Mật khẩu'
+          rules={[
+            { required: true, message: validateMessages.REQUIRED },
+            { message: validateMessages.LENGTH.PASSWORD, min: 6 }
+          ]}
+        >
           <Input.Password placeholder='Nhập mật khẩu' className='h-14' />
         </Form.Item>
 

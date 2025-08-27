@@ -1,12 +1,23 @@
-import { Button, Checkbox, Divider, Flex, Form, Input, Space, Typography } from 'antd'
+import { Button, Checkbox, Divider, Flex, Form, Input, message, Typography } from 'antd'
+import { validateMessages } from '~/constants/message'
+import { useLogin } from '~/pages/auth/hooks/use-login'
+import type { LoginPayload } from '~/types/auth'
 
 const { Title, Text } = Typography
 
 const LoginForm = () => {
   const [form] = Form.useForm()
+  const { isPending, mutate } = useLogin()
 
-  const handleLogin = async (values: any) => {
-    console.log('🚀values---->', values)
+  const handleLogin = async (values: LoginPayload & { isAgree: boolean }) => {
+    const { isAgree, ...payload } = values
+
+    mutate(payload, {
+      onSuccess: () => {
+        form.resetFields()
+        message.success('Đăng nhập thành công')
+      }
+    })
   }
 
   return (
@@ -21,15 +32,39 @@ const LoginForm = () => {
         </Text>
       </div>
 
-      <Form layout='vertical' style={{ marginTop: 32 }} form={form} name='login-form' onFinish={handleLogin}>
-        <Form.Item required name='email' label='Email'>
+      <Form
+        disabled={isPending}
+        layout='vertical'
+        style={{ marginTop: 32 }}
+        form={form}
+        name='login-form'
+        onFinish={handleLogin}
+      >
+        <Form.Item
+          required
+          name='email'
+          label='Email'
+          rules={[
+            { required: true, message: validateMessages.REQUIRED },
+            { pattern: validateMessages.REGEX.EMAIL.PATTERN, message: validateMessages.REGEX.EMAIL.MESSAGE }
+          ]}
+        >
           <Input placeholder='Nhập email' className='h-14' />
         </Form.Item>
-        <Form.Item required name='password' label='Mật khẩu'>
+        <Form.Item
+          required
+          name='password'
+          label='Mật khẩu'
+          rules={[
+            { required: true, message: validateMessages.REQUIRED },
+            { min: 6, message: validateMessages.LENGTH.PASSWORD }
+          ]}
+        >
           <Input.Password placeholder='Nhập mật khẩu' className='h-14' />
         </Form.Item>
-        <Flex align='center' gap='small'>
-          <Form.Item className='mb-0' name='isAgree' valuePropName='checked'>
+
+        <Flex align='center' dir='row-reverse' gap='small'>
+          <Form.Item className='mb-0' name='isAgree' initialValue={false} valuePropName='checked'>
             <Checkbox />
           </Form.Item>
           <Text>Ghi nhớ đăng nhập</Text>
