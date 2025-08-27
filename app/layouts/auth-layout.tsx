@@ -8,7 +8,7 @@ const AuthLayout = () => {
 
   return (
     <main>
-      <div className='grid grid-cols-12 h-screen'>
+      <div className='grid grid-cols-12 h-screen max-h-[1080px]'>
         <div className='col-span-12 lg:col-span-6 p-8' style={{ backgroundColor: colorBgContainer }}>
           {/* Logo */}
           <Link to='/' className='flex items-center gap-3 text-4xl font-semibold'>
@@ -45,7 +45,7 @@ const AuthLayout = () => {
           {/* Auth Form */}
           <Outlet />
         </div>
-        <div className='hidden lg:block col-span-6 bg-red-500'>
+        <div className='hidden lg:block col-span-6'>
           <img
             src='https://images.unsplash.com/photo-1525468568166-6f2cd17c7ec9?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
             className='w-full h-full object-cover'

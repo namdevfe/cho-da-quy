@@ -1,10 +1,13 @@
 import '@ant-design/v5-patch-for-react-19'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { ConfigProvider } from 'antd'
 import { isRouteErrorResponse, Links, Meta, Outlet, Scripts, ScrollRestoration } from 'react-router'
 import { darkTheme, lightTheme } from '~/config/theme'
 import { Theme } from '~/stores/slices/themeSlice'
 import { useBoundStore } from '~/stores/useBoundStore'
 import type { Route } from './+types/root'
+
 import '~/styles/app.css'
 
 export const links: Route.LinksFunction = () => [
@@ -46,10 +49,14 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
 export default function App() {
   const { theme: currentTheme } = useBoundStore()
+  const queryClient = new QueryClient()
 
   return (
     <ConfigProvider theme={currentTheme === Theme.DARK ? darkTheme : lightTheme}>
-      <Outlet />
+      <QueryClientProvider client={queryClient}>
+        <Outlet />
+        <ReactQueryDevtools initialIsOpen={false} />
+      </QueryClientProvider>
     </ConfigProvider>
   )
 }
