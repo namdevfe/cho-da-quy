@@ -1,0 +1,20 @@
+#login-form .ant-form-item,
+#register-form .ant-form-item {
+  margin-bottom: 32px;
+}
+
+#login-form .ant-checkbox-inner {
+  width: 20px;
+  height: 20px;
+}
+
+#login-form ..ant-checkbox-inner::after {
+  width: 6px;
+  height: 10px;
+}
+
+/* Custom icon for social btn with icon */
+#login-form .ant-btn .ant-btn-icon,
+#register-form .ant-btn .ant-btn-icon {
+  display: flex;
+}

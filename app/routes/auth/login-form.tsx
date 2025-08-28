@@ -2,10 +2,13 @@ import { Button, Checkbox, Divider, Flex, Form, Input, message, Typography } fro
 import Cookies from 'js-cookie'
 import { useNavigate } from 'react-router'
 import { validateMessages } from '~/constants/message'
-import { privateRoutes } from '~/constants/route'
+import { privateRoutes, publicRoutes } from '~/constants/route'
 import { useLogin } from '~/pages/auth/hooks/use-login'
 import { useBoundStore } from '~/stores/use-bound-store'
 import type { LoginPayload } from '~/types/auth'
+
+import '~/styles/auth.css'
+import { GoogleIcon } from '~/components/icons/google-icon'
 
 const { Title, Text } = Typography
 
@@ -33,25 +36,8 @@ const LoginForm = () => {
   }
 
   return (
-    <div className='px-0 py-4 lg:px-16 lg:py-8 h-full flex flex-col justify-center'>
-      {/* Heading */}
-      <div>
-        <Title level={2} className='!mb-3'>
-          Đăng nhập
-        </Title>
-        <Text type='secondary' className=''>
-          Chào mừng bạn đến với hệ thống bán đá quý
-        </Text>
-      </div>
-
-      <Form
-        disabled={isPending}
-        layout='vertical'
-        style={{ marginTop: 32 }}
-        form={form}
-        name='login-form'
-        onFinish={handleLogin}
-      >
+    <div className='flex flex-col '>
+      <Form disabled={isPending} layout='vertical' form={form} name='login-form' onFinish={handleLogin}>
         <Form.Item
           required
           name='email'
@@ -87,9 +73,15 @@ const LoginForm = () => {
             Đăng nhập
           </Button>
           <Divider style={{ borderColor: '#D9D9D9', color: '#D9D9D9' }}>or</Divider>
-          <Button className='w-full !h-[54px]' size='large'>
+          <Button className='w-full !h-[54px]' size='large' icon={<GoogleIcon />}>
             Đăng nhập với Google
           </Button>
+          <div className='flex items-center justify-center gap-2 mt-3'>
+            <Text>Bạn chưa có tài khoản?</Text>
+            <Button className='p-0' type='link' onClick={() => navigate(publicRoutes.REGISTER)}>
+              Đăng ký
+            </Button>
+          </div>
         </div>
       </Form>
     </div>

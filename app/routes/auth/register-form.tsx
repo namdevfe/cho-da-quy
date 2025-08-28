@@ -1,10 +1,14 @@
-import { Button, Checkbox, Divider, Flex, Form, Input, message, Space, Typography } from 'antd'
+import { Button, Divider, Form, Input, message, Typography } from 'antd'
 import { useNavigate } from 'react-router'
 import { validateMessages } from '~/constants/message'
 import { useRegister } from '~/pages/auth/hooks'
 import type { RegisterPayload } from '~/types/auth'
+import { publicRoutes } from '~/constants'
 
-const { Title, Text } = Typography
+import '~/styles/auth.css'
+import { GoogleIcon } from '~/components/icons/google-icon'
+
+const { Text } = Typography
 
 const RegisterForm = () => {
   const navigate = useNavigate()
@@ -23,18 +27,8 @@ const RegisterForm = () => {
   }
 
   return (
-    <div className='px-0 py-4 lg:px-16 lg:py-8 h-full flex flex-col justify-center'>
-      {/* Heading */}
-      <div>
-        <Title level={2} className='!mb-3'>
-          Đăng ký
-        </Title>
-        <Text type='secondary' className=''>
-          Đăng ký tài khoản để sử dụng hệ thống
-        </Text>
-      </div>
-
-      <Form layout='vertical' style={{ marginTop: 32 }} form={form} name='login-form' onFinish={handleRegister}>
+    <div className='flex flex-col'>
+      <Form layout='vertical' form={form} name='register-form' onFinish={handleRegister}>
         <Form.Item
           required
           name='name'
@@ -71,13 +65,13 @@ const RegisterForm = () => {
             Đăng ký
           </Button>
           <Divider style={{ borderColor: '#D9D9D9', color: '#D9D9D9' }}>or</Divider>
-          <Button className='w-full !h-[54px]' size='large'>
+          <Button className='w-full !h-[54px]' size='large' icon={<GoogleIcon />}>
             Đăng nhập với Google
           </Button>
 
           <div className='flex items-center justify-center gap-2 mt-3'>
             <Text>Bạn đã có tài khoản?</Text>
-            <Button className='p-0' type='link' onClick={() => navigate('/login')}>
+            <Button className='p-0' type='link' onClick={() => navigate(publicRoutes.LOGIN)}>
               Đăng nhập
             </Button>
           </div>
