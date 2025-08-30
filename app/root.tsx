@@ -63,7 +63,7 @@ export default function App() {
 
   useEffect(() => {
     if (!isProfilePending && profileData) {
-      setAuth({ profile: profileData })
+      setAuth({ profile: profileData.data })
     }
   }, [profileData])
 

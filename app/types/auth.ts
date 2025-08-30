@@ -1,3 +1,4 @@
+import type { ApiResponse } from '~/types/common'
 import type { IUser } from '~/types/user'
 
 export type RegisterPayload = Pick<IUser, 'name' | 'email' | 'password'>
@@ -12,7 +13,9 @@ export type LoginResponse = {
   }
 }
 
-export type GetProfileResponse = IUser & {
+export type Profile = IUser & {
   roles: string[]
   permissions: string[]
 }
+
+export type GetProfileResponse = ApiResponse<Profile>

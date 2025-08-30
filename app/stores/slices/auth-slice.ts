@@ -3,8 +3,8 @@ import type { IUser } from '~/types/user'
 
 export interface AuthSlice {
   isLoggedIn: boolean
-  profile: IUser | null
-  setAuth: ({ profile, isLoggedIn }: { profile: IUser | null; isLoggedIn?: boolean }) => void
+  profile?: IUser | null
+  setAuth: ({ profile, isLoggedIn }: { profile?: IUser | null; isLoggedIn?: boolean }) => void
   logout: () => void
 }
 
