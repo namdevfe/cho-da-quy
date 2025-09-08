@@ -23,11 +23,8 @@ const LoginForm = () => {
 
     mutate(payload, {
       onSuccess: async () => {
-        // Get state isLogin from cookie
-        const isLoggedIn = !!Cookies.get('isLogin')
-
         // Set profile to store
-        setAuth({ profile: null, isLoggedIn })
+        setAuth({ profile: null, isLoggedIn: true })
 
         message.success('Đăng nhập thành công')
         navigate(privateRoutes.DASHBOARD)

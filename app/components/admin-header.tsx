@@ -10,37 +10,41 @@ import { Dropdown } from 'antd'
 
 const { Header } = Layout
 
-const items: MenuProps['items'] = [
-  {
-    label: (
-      <a href='https://www.antgroup.com' target='_blank' rel='noopener noreferrer'>
-        1st menu item
-      </a>
-    ),
-    key: '0'
-  },
-  {
-    label: (
-      <a href='https://www.aliyun.com' target='_blank' rel='noopener noreferrer'>
-        2nd menu item
-      </a>
-    ),
-    key: '1'
-  },
-  {
-    type: 'divider'
-  },
-  {
-    label: '3rd menu item',
-    key: '3'
-  }
-]
-
 const AdminHeader = () => {
   const {
     token: { colorBgContainer }
   } = theme.useToken()
   const { theme: currentTheme, toggleTheme } = useBoundStore()
+  const logout = useBoundStore((state) => state.logout)
+
+  const items: MenuProps['items'] = [
+    {
+      label: (
+        <a href='https://www.antgroup.com' target='_blank' rel='noopener noreferrer'>
+          1st menu item
+        </a>
+      ),
+      key: '0'
+    },
+    {
+      label: (
+        <a href='https://www.aliyun.com' target='_blank' rel='noopener noreferrer'>
+          2nd menu item
+        </a>
+      ),
+      key: '1'
+    },
+    {
+      type: 'divider'
+    },
+    {
+      label: 'Đăng xuất',
+      key: 'logout',
+      onClick: () => {
+        logout()
+      }
+    }
+  ]
 
   return (
     <Header style={{ backgroundColor: colorBgContainer }}>
@@ -57,7 +61,11 @@ const AdminHeader = () => {
             {currentTheme === Theme.DARK ? 'Chế độ tối' : 'Chế độ sáng'}
           </Button>
           <Dropdown menu={{ items }} trigger={['click']}>
-            <a onClick={(e) => e.preventDefault()}>
+            <a
+              onClick={(e) => {
+                e.preventDefault()
+              }}
+            >
               <Space>
                 <Avatar size={40} icon={<UserOutlined />} />
                 <DownOutlined />
