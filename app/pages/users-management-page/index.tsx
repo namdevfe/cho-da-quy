@@ -8,6 +8,8 @@ import {
 } from '@ant-design/icons'
 import type { User } from '~/types/user'
 import { USERS_MOCK_DATA } from '~/mocks/user-mock'
+import { useGetUsers } from '~/pages/users-management-page/hooks'
+import { DEFAULT_USER_PAGE, LIMIT_USERS } from '~/constants'
 
 const { Title, Text } = Typography
 
@@ -50,6 +52,10 @@ const UsersManagementPage = () => {
       name: record.fullName
     })
   }
+
+  const { data } = useGetUsers({ page: DEFAULT_USER_PAGE, limit: LIMIT_USERS })
+
+  console.log('🚀data---->', data)
 
   return (
     <div className='px-3 py-6'>
