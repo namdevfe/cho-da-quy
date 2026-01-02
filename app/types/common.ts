@@ -8,3 +8,8 @@ export interface ApiResponse<T = null> {
   message: string
   statusCode: number
 }
+
+export interface QueryParams {
+  page: number | string
+  limit: number | string
+}
